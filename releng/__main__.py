@@ -11,10 +11,10 @@ instead.
 import argparse
 import os
 
-from common import Project
-from context import BuildContext
-from factory import ContextFactory
-import matrixbuild
+from .common import Project
+from .context import BuildContext
+from .factory import ContextFactory
+from . import matrixbuild
 
 def run_build(args, factory):
     BuildContext._run_build(factory, args.script, args.job_type, args.opts)
@@ -87,7 +87,7 @@ env.update({
 # Please ensure that run_build() in __init__.py stays in sync.
 factory = ContextFactory(default_project=project, system=args.system, env=env)
 if not args.run:
-    from executor import DryRunExecutor
+    from .executor import DryRunExecutor
     factory.init_executor(cls=DryRunExecutor)
 factory.init_gerrit_integration(user=args.user)
 with factory.status_reporter as status:

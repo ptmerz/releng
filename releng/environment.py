@@ -7,10 +7,10 @@ agent environment, such as paths to various executables.
 
 import os
 
-from common import ConfigurationError
-from common import Compiler,System
-import cmake
-import agents
+from .common import ConfigurationError
+from .common import Compiler,System
+from . import cmake
+from . import agents
 import re
 
 # TODO: Check that the paths returned/used actually exists and raise nice

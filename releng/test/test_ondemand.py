@@ -1,9 +1,7 @@
 import base64
 import os.path
 import unittest
-# With Python 2.7, this needs to be separately installed.
-# With Python 3.3 and up, this should change to unittest.mock.
-import mock
+from unittest import mock
 
 from releng.common import Project
 from releng.ondemand import get_actions_from_triggering_comment

@@ -10,9 +10,9 @@ import os.path
 import pipes
 import shlex
 
-from common import BuildError, ConfigurationError, Project
-from options import BuildConfig, select_build_hosts
-import agents
+from .common import BuildError, ConfigurationError, Project
+from .options import BuildConfig, select_build_hosts
+from . import agents
 
 def prepare_build_matrix(factory, configfile):
     projects = factory.projects

@@ -5,11 +5,11 @@ Declares a factory class for wiring together all the other releng classes.
 import os
 import platform
 
-from common import Project, System
-from context import BuildContext
-from executor import CommandRunner, CurrentDirectoryTracker, Executor
-from integration import GerritIntegration, JenkinsIntegration, ProjectsManager, StatusReporter
-from workspace import Workspace
+from .common import Project, System
+from .context import BuildContext
+from .executor import CommandRunner, CurrentDirectoryTracker, Executor
+from .integration import GerritIntegration, JenkinsIntegration, ProjectsManager, StatusReporter
+from .workspace import Workspace
 
 class ContextFactory(object):
 

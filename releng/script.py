@@ -5,13 +5,14 @@ This module is only used internally within the releng package.
 """
 
 import os.path
+import collections
 
-from common import BuildError, ConfigurationError
-from common import Enum
-from common import BuildType, Compiler, FftLibrary, JobType, Project, Simd, Gpuhw, System
-from integration import ParameterTypes
-from options import OptionTypes
-import utils
+from .common import BuildError, ConfigurationError
+from .common import Enum
+from .common import BuildType, Compiler, FftLibrary, JobType, Project, Simd, Gpuhw, System
+from .integration import ParameterTypes
+from .options import OptionTypes
+from . import utils
 
 class BuildScriptSettings(object):
     """
@@ -85,7 +86,7 @@ class BuildScript(object):
         code = compile(source, path, 'exec')
         exec(code, build_globals)
         do_build = build_globals.get('do_build', None)
-        if do_build is None or not callable(do_build):
+        if do_build is None or not isinstance(do_build, collections.Callable):
             raise ConfigurationError('build script does not define do_build(): ' + path)
         self._do_build = do_build
         self.settings = BuildScriptSettings()

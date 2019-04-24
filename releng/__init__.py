@@ -12,7 +12,7 @@ For testing, the package can also be executed as a command-line module.
 
 # Expose the JobType enum to make it simpler to import just the releng module
 # and call run_build().
-from common import JobType, Project
+from .common import JobType, Project
 
 def run_build(build, job_type, opts, project=Project.GROMACS):
     """Main entry point for Jenkins builds.
@@ -38,8 +38,8 @@ def run_build(build, job_type, opts, project=Project.GROMACS):
             Build scripts not intended for such builds may simply ignore most
             of the parameters that can be influenced by these options.
     """
-    from context import BuildContext
-    from factory import ContextFactory
+    from .context import BuildContext
+    from .factory import ContextFactory
     # Please ensure that __main__.py stays in sync.
     factory = ContextFactory(default_project=project)
     with factory.status_reporter:
@@ -51,8 +51,8 @@ def read_build_script_config(script_name):
     Args:
         script_name (str): Name of the build script (see run_build()).
     """
-    from context import BuildContext
-    from factory import ContextFactory
+    from .context import BuildContext
+    from .factory import ContextFactory
     factory = ContextFactory()
     with factory.status_reporter as status:
         config = BuildContext._read_build_script_config(factory, script_name)
@@ -70,8 +70,8 @@ def prepare_multi_configuration_build(configfile):
             Names without directory separators are interpreted as
             :file:`gromacs/admin/builds/{configfile}.txt`.
     """
-    from factory import ContextFactory
-    from matrixbuild import prepare_build_matrix
+    from .factory import ContextFactory
+    from .matrixbuild import prepare_build_matrix
     factory = ContextFactory()
     with factory.status_reporter as status:
         status.return_value = prepare_build_matrix(factory, configfile)
@@ -88,8 +88,8 @@ def process_multi_configuration_build_results(inputfile):
     Args:
         inputfile (str): File to read the input from, relative to working dir.
     """
-    from factory import ContextFactory
-    from matrixbuild import process_matrix_results
+    from .factory import ContextFactory
+    from .matrixbuild import process_matrix_results
     factory = ContextFactory()
     with factory.status_reporter as status:
         status.return_value = process_matrix_results(factory, inputfile)
@@ -100,8 +100,8 @@ def get_actions_from_triggering_comment():
     Parses the comment that triggered an on-demand build and returns a
     structure that tells the workflow build what it needs to do.
     """
-    from factory import ContextFactory
-    from ondemand import get_actions_from_triggering_comment
+    from .factory import ContextFactory
+    from .ondemand import get_actions_from_triggering_comment
     factory = ContextFactory()
     with factory.status_reporter as status:
         status.return_value = get_actions_from_triggering_comment(factory)
@@ -119,8 +119,8 @@ def do_ondemand_post_build(inputfile):
     Args:
         inputfile (str): File to read the input from, relative to working dir.
     """
-    from factory import ContextFactory
-    from ondemand import do_post_build
+    from .factory import ContextFactory
+    from .ondemand import do_post_build
     factory = ContextFactory()
     with factory.status_reporter as status:
         status.return_value = do_post_build(factory, inputfile)
@@ -131,7 +131,7 @@ def get_build_revisions():
     Returns a structure that provides a list of projects and their revisions
     used in this build.
     """
-    from factory import ContextFactory
+    from .factory import ContextFactory
     factory = ContextFactory()
     with factory.status_reporter as status:
         status.return_value = factory.projects.get_build_revisions()
@@ -142,8 +142,8 @@ def read_source_version_info():
     Returns a structure that provides version information from the source
     repository.
     """
-    from context import BuildContext
-    from factory import ContextFactory
+    from .context import BuildContext
+    from .factory import ContextFactory
     factory = ContextFactory()
     with factory.status_reporter as status:
         context = BuildContext._run_build(factory, 'get-version-info', JobType.GERRIT, None)

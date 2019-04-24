@@ -11,7 +11,6 @@ object to allow the above replacements to work as intended.  For now, this is
 not used throughout the scripts, but its use and scope will be extended with
 expanding unit tests.
 """
-from __future__ import print_function
 
 from distutils.spawn import find_executable
 import os
@@ -21,8 +20,8 @@ import shutil
 import subprocess
 import sys
 
-from common import AbortError, CommandError, System
-import utils
+from .common import AbortError, CommandError, System
+from . import utils
 
 def _read_file(path, binary):
     if binary:

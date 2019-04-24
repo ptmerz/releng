@@ -1,11 +1,9 @@
 import json
 import os.path
-from StringIO import StringIO
+from io import StringIO
 import textwrap
-import urlparse
-# With Python 2.7, this needs to be separately installed.
-# With Python 3.3 and up, this should change to unittest.mock.
-import mock
+import urllib.parse
+from unittest import mock
 
 from releng.common import CommandError, Project
 from releng.executor import Executor
@@ -62,7 +60,7 @@ class RepositoryTestState(object):
 
     @property
     def projects(self):
-        return self._commits.keys()
+        return list(self._commits.keys())
 
     def has_project(self, project):
         return project in self._commits
@@ -74,9 +72,9 @@ class RepositoryTestState(object):
         if project:
             return self._commits[project]
         if sha1:
-            return filter(lambda x: x.sha1 == sha1, self._commits.itervalues())[0]
+            return filter(lambda x: x.sha1 == sha1, self._commits.values())[0]
         if change_number:
-            return filter(lambda x: x.change_number == change_number, self._commits.itervalues())[0]
+            return filter(lambda x: x.change_number == change_number, self._commits.values())[0]
 
     @property
     def expected_build_revisions(self):
@@ -151,7 +149,7 @@ class TestHelper(object):
                 raise CommandError('commit not found: ' + cmd[4])
             return '{0} {1}\n'.format(commit.sha1, commit.title)
         elif cmd[:2] == ['git', 'ls-remote']:
-            git_url = urlparse.urlsplit(cmd[2])
+            git_url = urllib.parse.urlsplit(cmd[2])
             project = Project.parse(os.path.splitext(git_url.path[1:])[0])
             commit = self._commits.find_commit(project, refspec=cmd[3])
             return '{0} {1}\n'.format(commit.sha1, commit.refspec)

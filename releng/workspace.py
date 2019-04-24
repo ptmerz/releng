@@ -4,13 +4,12 @@ Build workspace handling
 This module should contain most (if not all) raw file manipulation
 commands related to setting up and inspecting the workspace.
 """
-from __future__ import print_function
 
 import os.path
 import tarfile
 
-from common import BuildError, CommandError, ConfigurationError
-from common import Project
+from .common import BuildError, CommandError, ConfigurationError
+from .common import Project
 
 class CheckedOutProject(object):
     """Information about a checked-out project.

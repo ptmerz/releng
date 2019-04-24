@@ -1,7 +1,7 @@
 """
 Information about Jenkins build agents
 """
-from common import ConfigurationError
+from .common import ConfigurationError
 
 BS_MAC = 'bs_mac'
 BS_MIC = 'bs_mic'
@@ -261,7 +261,7 @@ def pick_host(labels, opts):
     if labels.issubset(_HOST_LABELS[DOCKER_DEFAULT]):
         return DOCKER_DEFAULT
     possible_hosts = []
-    for host, host_labels in _HOST_LABELS.iteritems():
+    for host, host_labels in _HOST_LABELS.items():
         if labels.issubset(host_labels):
             possible_hosts.append(host)
     if not possible_hosts:

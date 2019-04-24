@@ -10,11 +10,11 @@ code is internal to releng.
 import re
 import shlex
 
-from common import to_python_identifier
-from common import ConfigurationError
-from common import BuildType, FftLibrary, Simd, Gpuhw
-from environment import BuildEnvironment
-import agents
+from .common import to_python_identifier
+from .common import ConfigurationError
+from .common import BuildType, FftLibrary, Simd, Gpuhw
+from .environment import BuildEnvironment
+from . import agents
 
 class BuildConfig(object):
     def __init__(self, opts, host=None):
@@ -386,7 +386,7 @@ def _define_handlers(e, extra_options):
         handlers.append(_VersionOptionHandler('opencl', e._init_opencl, label=OPT))
 
     if extra_options:
-        for name, builder in extra_options.iteritems():
+        for name, builder in extra_options.items():
             new_handler = builder(name)
             existing_handlers = [x for x in handlers if x.name == name]
             assert len(existing_handlers) <= 1
@@ -427,7 +427,7 @@ def process_build_options(factory, opts, script_settings):
 
 def _remove_host_option(opts):
     """Removes options that specify the execution host."""
-    return list(filter(lambda x: not x.lower().startswith(('host=', 'label=')), opts))
+    return list([x for x in opts if not x.lower().startswith(('host=', 'label='))])
 
 def select_build_hosts(factory, configs):
     """Selects build host for each configuration.

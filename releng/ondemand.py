@@ -5,10 +5,10 @@ import json
 import os.path
 import re
 
-from common import BuildError, JobType, Project
-from integration import RefSpec
-from matrixbuild import get_matrix_info
-from script import BuildScript
+from .common import BuildError, JobType, Project
+from .integration import RefSpec
+from .matrixbuild import get_matrix_info
+from .script import BuildScript
 
 def get_actions_from_triggering_comment(factory):
     request = factory.gerrit.get_triggering_comment()
@@ -204,7 +204,7 @@ def do_post_build(factory, inputfile):
         reason = reasons[0]
     elif build_messages:
         reason = '\n'.join(build_messages)
-    if data.has_key('gerrit_info') and data['gerrit_info']:
+    if 'gerrit_info' in data and data['gerrit_info']:
         gerrit_info = data['gerrit_info']
         change = gerrit_info['change']
         patchset = gerrit_info['patchset']
@@ -216,7 +216,7 @@ def _get_reasons(factory, data):
     return [_get_reason(factory, x) for x in builds]
 
 def _get_reason(factory, build):
-    if build.has_key('reason') and build['reason']:
+    if 'reason' in build and build['reason']:
         return build['reason'].rstrip()
     return None
 
@@ -237,12 +237,12 @@ def _get_title(build):
     return _append_desc(title, build)
 
 def _get_url(build):
-    if build.has_key('url') and build['url']:
+    if 'url' in build and build['url']:
         return build['url']
     return None
 
 def _append_desc(text, build):
-    if text and build.has_key('desc') and build['desc']:
+    if text and 'desc' in build and build['desc']:
         text += ' ({0})'.format(build['desc'])
     return text
 

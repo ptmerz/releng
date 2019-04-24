@@ -5,7 +5,6 @@ This module should contain all code related to interacting with Gerrit
 and as much as possible of the code related to interacting with the Jenkins job
 configuration and passing information back to workflow Groovy scripts.
 """
-from __future__ import print_function
 
 import ast
 import base64
@@ -13,11 +12,11 @@ import json
 import os
 import re
 import traceback
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
-from common import AbortError, BuildError, ConfigurationError
-from common import Project, System
-import utils
+from .common import AbortError, BuildError, ConfigurationError
+from .common import Project, System
+from . import utils
 
 class RefSpec(object):
 
@@ -371,10 +370,10 @@ class ProjectsManager(object):
         return Project.parse(checkout_project)
 
     def _resolve_missing_refspecs(self):
-        missing = set([p.project for p in self._projects.itervalues() if not p.refspec])
+        missing = set([p.project for p in self._projects.values() if not p.refspec])
         if not missing:
             return
-        known = list([p for p in self._projects.itervalues() if p.refspec and p.project != Project.RELENG])
+        known = list([p for p in self._projects.values() if p.refspec and p.project != Project.RELENG])
         if not self._branch and known:
             assert len(known) == 1
             known[0].ensure_branch_loaded(self._gerrit)
@@ -439,7 +438,7 @@ class ProjectsManager(object):
         """
         console = self._executor.console
         all_correct = True
-        for project_info in self._projects.itervalues():
+        for project_info in self._projects.values():
             if not project_info.is_checked_out:
                 continue
             if not project_info.has_correct_hash():
@@ -540,7 +539,7 @@ class MatrixBuildInfo(object):
             url = run_data['url']
             options_parts = [x for x in url.split('/') if x.startswith("OPTIONS=")]
             assert len(options_parts) == 1
-            opts = urllib.unquote(options_parts[0][8:]).split()
+            opts = urllib.parse.unquote(options_parts[0][8:]).split()
             host = opts[-1].split(',')[0][5:]
             opts = opts[:-1]
             self.runs.append(MatrixRunInfo(opts, host, result, url))
@@ -594,7 +593,7 @@ class JenkinsIntegration(object):
 
     def _query_build(self, url, tree):
         query_url = '{0}/api/python?tree={1}'.format(url, tree)
-        return ast.literal_eval(urllib.urlopen(query_url).read())
+        return ast.literal_eval(urllib.request.urlopen(query_url).read())
 
 
 class StatusReporter(object):

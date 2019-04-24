@@ -5,7 +5,7 @@ import os.path
 import re
 import xml.etree.ElementTree as ET
 
-from common import BuildError, ConfigurationError
+from .common import BuildError, ConfigurationError
 
 def read_cmake_variable_file(executor, path):
     """Reads a file with CMake variable declarations (set commands).

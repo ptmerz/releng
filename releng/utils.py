@@ -38,5 +38,5 @@ def write_property_file(executor, path, values):
         path (str): Path to the file to write.
         values (Dict): Dictionary of key/value pairs to write.
     """
-    contents = ''.join(['{0} = {1}\n'.format(key, value) for key, value in values.iteritems() if value is not None])
+    contents = ''.join(['{0} = {1}\n'.format(key, value) for key, value in values.items() if value is not None])
     executor.write_file(path, contents)

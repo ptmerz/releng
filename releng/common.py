@@ -76,7 +76,7 @@ class Enum(object):
             attrs[attr_name] = string
             values.append(attrs[attr_name])
         attrs.update(kwargs)
-        values.extend(kwargs.itervalues())
+        values.extend(iter(kwargs.values()))
         attrs['_values'] = tuple(values)
         return type(name, (Enum,), attrs)
 

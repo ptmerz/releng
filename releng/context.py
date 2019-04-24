@@ -8,12 +8,12 @@ import re
 import shutil
 import subprocess
 
-from common import BuildError, CommandError, ConfigurationError
-from common import JobType, Project
-from options import BuildConfig, process_build_options, select_build_hosts
-from script import BuildScript, BuildScriptSettings
-import cmake
-import utils
+from .common import BuildError, CommandError, ConfigurationError
+from .common import JobType, Project
+from .options import BuildConfig, process_build_options, select_build_hosts
+from .script import BuildScript, BuildScriptSettings
+from . import cmake
+from . import utils
 
 class BuildContext(object):
     """Top-level interface for build scripts to the releng package.
@@ -127,7 +127,7 @@ class BuildContext(object):
             cmake_args.extend(['-G', self.env.cmake_generator])
         cmake_args.extend(
                 ['-D{0}={1}'.format(key, value)
-                    for key, value in sorted(options.iteritems())
+                    for key, value in sorted(options.items())
                     if value is not None])
         self.run_cmd([self.env.cmake_command, '--version'])
         self.run_cmd(cmake_args, failure_message='CMake configuration failed')
